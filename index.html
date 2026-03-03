@@ -562,9 +562,9 @@
     <div class="label" style="color:rgba(255,255,255,0.5);text-align:center;">The Hiring Trap</div>
     <h2 style="color:#fff;text-align:center;margin-bottom:48px;">I tried hiring. It just made the problem more expensive.</h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:800px;margin:0 auto 48px;">
-      <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:16px;padding:32px 28px;">
+      <div style="background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
         <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:#ef4444;margin-bottom:24px;">HIRING</div>
-        <div style="font-size:16px;color:rgba(255,255,255,0.75);line-height:2.4;">
+        <div style="font-size:16px;color:#475569;line-height:2.4;">
           <p style="margin:0;"><span style="color:#ef4444;font-weight:700;margin-right:10px;">✗</span>Training and onboarding</p>
           <p style="margin:0;"><span style="color:#ef4444;font-weight:700;margin-right:10px;">✗</span>Turnover when they quit</p>
           <p style="margin:0;"><span style="color:#ef4444;font-weight:700;margin-right:10px;">✗</span>Still misses texts and DMs</p>
@@ -572,9 +572,9 @@
           <p style="margin:0;"><span style="color:#ef4444;font-weight:700;margin-right:10px;">✗</span>Inconsistent follow-up</p>
         </div>
       </div>
-      <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.25);border-radius:16px;padding:32px 28px;">
+      <div style="background:#f0fdf4;border:2px solid #22c55e;border-radius:16px;padding:32px 28px;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
         <div style="font-size:13px;font-weight:700;letter-spacing:1px;color:#22c55e;margin-bottom:24px;">TOUROPS</div>
-        <div style="font-size:16px;color:rgba(255,255,255,0.75);line-height:2.4;">
+        <div style="font-size:16px;color:#1e293b;line-height:2.4;">
           <p style="margin:0;"><span style="color:#22c55e;font-weight:700;margin-right:10px;">✓</span>Set up once, runs forever</p>
           <p style="margin:0;"><span style="color:#22c55e;font-weight:700;margin-right:10px;">✓</span>Never calls in sick</p>
           <p style="margin:0;"><span style="color:#22c55e;font-weight:700;margin-right:10px;">✓</span>Every channel, instantly</p>
@@ -986,7 +986,6 @@
     const loss = i * v * c * 365;
     const net = loss - (297 * 12);
     document.getElementById('annual-loss').textContent = fmt(loss);
-    document.getElementById('net-return').textContent = net > 0 ? fmt(net) : '$0';
   }
   document.querySelectorAll('input[type=range]').forEach(i => i.addEventListener('input', calc));
   calc();
