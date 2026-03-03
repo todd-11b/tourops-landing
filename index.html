@@ -365,7 +365,8 @@
   .step-body { font-size: 15px; color: var(--gray); line-height: 1.7; }
 
   /* STICKY MOBILE CTA */
-  .sticky-mobile-cta { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.97); border-top: 1px solid var(--border); padding: 14px 20px; z-index: 998; box-shadow: 0 -4px 20px rgba(0,0,0,0.12); }
+  .sticky-mobile-cta { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.97); border-top: 1px solid var(--border); padding: 14px 20px; z-index: 998; box-shadow: 0 -4px 20px rgba(0,0,0,0.12); transform: translateY(100%); opacity: 0; transition: transform 0.4s ease, opacity 0.4s ease; }
+  .sticky-mobile-cta.visible { transform: translateY(0); opacity: 1; }
 
 
   @media (max-width: 768px) {
@@ -457,7 +458,7 @@
 
 <!-- COMPATIBILITY NOTE (replaces works-with bar + logo scroll for cleaner hero) -->
 <div style="text-align:center;padding:20px 0 0;">
-  <p style="font-size:14px;color:var(--gray);font-weight:500;">Works with FareHarbor, Peek Pro, Xola, your CRM, and more &mdash; nothing gets replaced.</p>
+  <p style="font-size:14px;color:var(--gray);font-weight:500;">Works with your existing phone, booking software, and CRM &mdash; nothing gets replaced.</p>
 </div>
 
 <!-- PROBLEM: TODD'S STORY -->
@@ -850,6 +851,11 @@
       <p class="onboarding-note"><strong>One-time onboarding: <s style="color:#9ca3af;font-weight:400;">$997</s> $497</strong> &mdash; Founding Operator rate</p>
       <p class="billing-note">Billing starts only once your system is live and handling inquiries.</p>
       <a href="#apply-form" class="btn btn-primary btn-full btn-lg">Get Started →</a>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:20px;padding:14px 0;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+        <span style="font-size:14px;font-weight:600;color:#16a34a;">30-Day Money-Back Guarantee</span>
+      </div>
+      <p style="font-size:12px;color:var(--gray);text-align:center;margin:0;">Not a fit within 30 days of go-live? Full onboarding refund. No questions asked.</p>
     </div>
   </div>
 </section>
@@ -1004,6 +1010,22 @@
       }
     }
     nextLine();
+  }
+
+  // Delay sticky mobile CTA until user scrolls past hero
+  const stickyCta = document.querySelector('.sticky-mobile-cta');
+  const heroSection = document.getElementById('hero');
+  if (stickyCta && heroSection) {
+    function checkStickyVisibility() {
+      const heroBottom = heroSection.getBoundingClientRect().bottom;
+      if (heroBottom < 0) {
+        stickyCta.classList.add('visible');
+      } else {
+        stickyCta.classList.remove('visible');
+      }
+    }
+    window.addEventListener('scroll', checkStickyVisibility, { passive: true });
+    checkStickyVisibility();
   }
 
   const typewriterObserver = new IntersectionObserver((entries) => {
