@@ -9,9 +9,9 @@
 
 ## WHERE WE ARE
 
-**Stage:** Testing — Grader v1.0 deployed 2026-02-22. Validation overdue. Hope V6.0 drafted and pending regression tests.
-**Primary Blocker:** Tim's grader validation report (OL-2) still overdue. Hope V6.0 cannot deploy until 19/19 regression tests complete.
-**Next Human Decision Required:** (1) Todd go/no-go on grader validation. (2) Todd sign-off on Hope V6.0 after 19/19 pass.
+**Stage:** Active Build — Hope V6.0 drafted. GHL build work (Conversation AI modules, workflows) in progress directly in BB production.
+**Primary Blocker:** None — build in BB, test in BB, then replicate to sandbox. 23/23 regression tests required before V6.0 deploys to production.
+**Next Human Decision Required:** Todd sign-off on Hope V6.0 after 23/23 pass.
 
 ---
 
@@ -23,7 +23,8 @@
 | OL-4 | Version Governance Matrix updated for Schema Contract 3 | Mike | 2026-03-07 | 🟡 Open |
 | OL-7 | Airtable + n8n build | Freelancer (Upwork) | 2026-03-14 | 🟡 Pending hire |
 | OL-10 | Tim + Mike onboarding emails sent (Claude project setup) | Todd | 2026-03-07 | 🟡 Draft ready — send when Tim has GitHub account |
-| OL-11 | Hope V6.0 — 19/19 regression tests | Mike/Tim | ASAP | 🟡 Open — V6.0 drafted 2026-03-03, awaiting test run |
+| OL-11 | Hope V6.0 — 23/23 regression tests | Mike/Tim | After GHL build complete | 🟡 Open — V6.0 drafted 2026-03-03, GHL build in progress in BB |
+| OL-12 | V6.0 GHL Build — BB Production | Todd | ASAP | 🟡 In Progress. ✅ 1: Consultation calendar created. ✅ 2: callback_scheduling_link custom value set. ⬜ 3: ConsultationBooked SMS template. ⬜ 4: Book Appointment action on Voice AI. ⬜ 5: V6.0 prompt + personality paste. ⬜ 6: After-call workflow (new outcomes + task creation). ⬜ 7: Grader prompt update. ⬜ 8: Conv AI modules (READY, DISC, RES_CHG, REF_CAN, CORP). ⬜ 9: End-to-end test. |
 
 ---
 
@@ -46,10 +47,10 @@
 
 ## BUILD STATE
 
-**Focus:** Grader v1.0 validation (VAI + CAI)
-**Done:** Schema Contract 3 live in BB production. BB overlay files corrected.
-**Blocked on:** Tim's validation report (OL-2)
-**Next build action after unblock:** Airtable + n8n infrastructure (freelancer)
+**Focus:** Hope V6.0 — GHL build in BB production (Conversation AI modules + workflows)
+**Done:** V6.0 prompt drafted. Three-tier escalation model designed. Regression suite updated to 23 tests.
+**Blocked on:** Nothing — active build
+**Next milestone:** GHL build complete → 23/23 regression tests → Todd sign-off → V6.0 production deploy → replicate to sandbox
 
 ---
 
@@ -76,7 +77,8 @@ Stable. Two items in flight — matrix update (Mike, non-blocking) and infrastru
 
 | Decision | Authority | Date |
 |----------|-----------|------|
-| Hope V6.0 drafted — KB-only URLs, path architecture (A–G). Pending 19/19 before deploy. | Todd | 2026-03-03 |
+| Hope V6.0 drafted — KB-only URLs, path architecture (A–G), three-tier escalation. Pending 23/23 before deploy. | Todd | 2026-03-03 |
+| Build order: BB production first, sandbox second. Not standard dev flow — intentional. | Todd | 2026-03-03 |
 | Claude project instructions written for Todd, Mike, Tim. Onboarding emails drafted. | Todd | 2026-03-03 |
 | Airtable confirmed as data layer | Todd | 2026-02-28 |
 | n8n built as reusable operator template — operator name as variable | Todd | 2026-02-28 |

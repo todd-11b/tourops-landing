@@ -1,6 +1,6 @@
 # TourOps Conversation Design Standard
 
-**Doc Revision:** r10
+**Doc Revision:** r11
 **Last Updated:** 2026-03-03
 **Status:** Behavioral Specification (Stable)
 **Scope:** All TourOps AI conversation systems (Voice AI & Conversation AI)
@@ -185,12 +185,13 @@ Each intent bucket maps to a modular "script play" — a self-contained conversa
 
 **Conversation Pattern:**
 1. If open_loop exists → address it first
-2. If all slots filled → go straight to SMS permission
-3. Ask ONE missing slot at a time
-4. "I can text you the booking link — should I send it to this number?"
-5. If yes → confirm name if missing → send correct link
-6. If no → "What number should I use?"
-7. After sending: "I just sent that over. Let me know if you have any questions."
+2. If group size 10+ → transition to Corporate/Private play (Standard 16)
+3. If all slots filled → go straight to SMS permission
+4. Ask ONE missing slot at a time
+5. "I can text you the booking link — should I send it to this number?"
+6. If yes → confirm name if missing → send correct link
+7. If no → "What number should I use?"
+8. After sending: "I just sent that over. Let me know if you have any questions."
 
 **Success Outcome:** Booking link sent via SMS
 **Disposition:** `tourops_outcome = LinkSent`, `tourops_next_best_action = AwaitCustomerReply`
@@ -200,27 +201,32 @@ Each intent bucket maps to a modular "script play" — a self-contained conversa
 ## Play C: Ops Modify (ReservationChange)
 
 **Trigger:** intent_bucket = ReservationChange
-**Goal:** Collect change details and route to human review
+**Goal:** Collect all change details, give policy, create task for human review
 **Emotional Context:** Customer may be anxious — reassure them the team will handle it
 
 **Required Slot Capture:**
 - Name on reservation
-- Current tour date
+- Current tour date and time
 - Desired change (new date, group size, pickup location, etc.)
+- Preferred new date/time/size
+- Reference number (if they have it)
 - Callback number
 
 **Conversation Pattern:**
 1. If open_loop exists → address it first
 2. Acknowledge: "I can help with that."
-3. Collect required slots ONE at a time
-4. If policy question arises → Query Policies KB
-5. Present policy neutrally: "Our standard policy is [X], but our team will review your specific request."
+3. Query Policies KB → present rescheduling policy: "Our standard policy is [X]. Our team will review your specific request."
+4. Collect required slots ONE at a time
+5. Create task with all collected details: booking name, current date/time, what they want changed, new preference, reference number, policy status note
 6. Offer scheduling: "I can have someone reach out at a set time to review this with you — want me to send you a link to pick a time?"
    - YES → send `{{custom_value.callback_scheduling_link}}` → `tourops_next_best_action = AwaitScheduledCall` → end cleanly
    - NO → collect callback number → "Our team will reach out soon." → Tier 3
 
-**Success Outcome:** Details collected, scheduling offered, escalated to human
-**Disposition:** `tourops_outcome = Escalated`, `tourops_next_best_action = AwaitScheduledCall` OR `AwaitHumanFollowUp`
+**Task Format:** `TOUROPS — ReservationChange — [Name] — [Current Date]`
+**Task Body:** booking name, current date/time, reference number, desired change, new preference, policy status
+
+**Success Outcome:** Details collected, task created, scheduling offered, escalated to human
+**Disposition:** `tourops_outcome = TaskCreated` (V6.0), `tourops_next_best_action = AwaitScheduledCall` OR `AwaitHumanFollowUp`
 
 ---
 
@@ -239,69 +245,83 @@ Each intent bucket maps to a modular "script play" — a self-contained conversa
 1. If open_loop exists → address it first
 2. If no context → "What kind of experience are you looking for, and about how many people?"
 3. Query Tour_Descriptions KB based on their preferences
-4. Recommend 2 options maximum: "We have [Option A] which is [benefit] or [Option B] which is [benefit]."
-5. Ask: "Do either of those sound like your vibe?"
+4. Recommend ONE tour using Paint + Outcome: "Think [scene] — so [benefit for their group]."
+5. Ask: "Does that sound like your vibe?"
 6. If booking intent appears → transition to ReadyToBook play
-7. If group size 10+ → transition to Corporate play
+7. If group size 10+ → transition to Corporate/Private play (Standard 16)
+8. If still not ready after recommendation → offer consultation: "Want me to set up a quick call so we can walk through options once you've had a chance to think?"
+   - YES → Book Appointment action (collect email) → caller picks slot → confirm. If no email → send `{{custom_value.callback_scheduling_link}}` via SMS
+   - NO → "No problem — call back anytime." → end warmly → `tourops_outcome = FollowUpQueued`
 
-**Success Outcome:** Moved to booking OR qualified for corporate
-**Disposition:** `tourops_outcome = FollowUpQueued` OR transition to ReadyToBook/Corporate
+**Success Outcome:** Moved to booking, qualified for corporate, or consultation booked
+**Disposition:** `tourops_outcome = FollowUpQueued`, `ConsultationBooked` (V6.0), OR transition to ReadyToBook/Corporate
 
 ---
 
 ## Play E: Objection Handle (RefundCancel)
 
 **Trigger:** intent_bucket = RefundCancel
-**Goal:** Collect details, provide policy guidance, route to human review
+**Goal:** Collect all details, provide policy guidance, create task for human review
 **Emotional Context:** Customer may be disappointed — be empathetic but policy-bound
 
 **Required Slot Capture:**
 - Name on reservation
-- Tour/date
+- Tour date and time
 - Cancel only OR refund requested
-- Reason (if refund)
+- Booking protection (yes/no/unknown)
+- Reason for cancellation
+- Reference number (if they have it)
 - Callback number
 
 **Conversation Pattern:**
 1. Acknowledge empathetically: "I understand."
-2. Collect required slots ONE at a time
-3. Clarify: "Are you looking to cancel only, or also requesting a refund?"
-4. If refund → Query Policies KB before discussing eligibility
-5. Present policy neutrally: "Our standard policy is [X]. Our team will review your specific situation."
+2. Ask: "Are you looking to cancel only, or also requesting a refund?"
+3. Ask: "Do you have booking protection on your reservation?"
+4. Query Policies KB → present policy: "Our standard policy is [X]. I'm going to get all of this to our team and we'll see what we can do for you."
+5. Collect remaining required slots ONE at a time
 6. Do NOT promise refund approval
-7. Offer scheduling: "I can have someone from our team reach out at a set time to review this with you — want me to send you a scheduling link?"
+7. Create task with all collected details: booking name, date/time, reference number, cancel-only vs. refund, reason, booking protection status, policy status note
+8. Offer scheduling: "I can have someone from our team reach out at a set time — want me to send you a scheduling link?"
    - YES → send `{{custom_value.callback_scheduling_link}}` → `tourops_next_best_action = AwaitScheduledCall` → end cleanly
    - NO → collect callback number → "Our team will reach out soon." → Tier 3
 
-**Success Outcome:** Details collected, scheduling offered, escalated to human
-**Disposition:** `tourops_outcome = Escalated`, `tourops_next_best_action = AwaitScheduledCall` OR `AwaitHumanFollowUp`
+**Task Format:** `TOUROPS — RefundCancel — [Name] — [Tour Date]`
+**Task Body:** booking name, date/time, reference number, cancel vs. refund, reason, booking protection status, policy status
+
+**Success Outcome:** Details collected, task created, scheduling offered, escalated to human
+**Disposition:** `tourops_outcome = TaskCreated` (V6.0), `tourops_next_best_action = AwaitScheduledCall` OR `AwaitHumanFollowUp`
 
 ---
 
-## Play F: B2B Professional (Corporate)
+## Play F: Private Tours & Large Groups (Corporate)
 
-**Trigger:** intent_bucket = Corporate (10+ people OR corporate context)
-**Goal:** Qualify opportunity and route to sales team with key details
-**Emotional Context:** Business context — be professional and structured
+**Trigger:** intent_bucket = Corporate (10+ people, OR bachelorette, birthday, wedding, corporate outing, team building, bus rental, private event)
+**Goal:** Qualify, answer from KB, and book a consultation OR send consultation link
+**Emotional Context:** Excited occasion or business context — match accordingly
+
+> **Note on naming:** The GHL AI Splitter routing label stays `CORP` for all private/large-group inquiries. The module and prompt language should reference "private tours" as the primary category — not "corporate" as the headline. Private social events (bachelorette, birthday) are the most common trigger.
 
 **Required Slot Capture:**
+- Event type (bachelorette, birthday, corporate, wedding, other)
+- Tour or transportation only?
 - Group size
-- Date/timeframe
-- Event type (team building, client entertainment, holiday party, etc.)
-- Desired vibe (casual, upscale, specific requirements)
-- Decision-maker name + callback number
+- Rough date/timeframe
+- Name + phone + email (email needed for Book Appointment action)
 
 **Conversation Pattern:**
 1. If open_loop exists → address it first
-2. Acknowledge: "For groups of 10+, we typically customize the experience."
-3. Collect required slots ONE at a time
-4. Do NOT send public booking links
-5. If pricing question → "We customize experiences based on group size and logistics. Our team will tailor options and pricing for you."
-6. If availability question → "Our team will check availability and confirm options."
-7. Confirm handoff: "I'm passing this to our team so we can put together the best options for your [event type]."
+2. Ask: "Is this for a private guided tour, or are you looking for transportation only?"
+   - Transportation only → query Booking_Links KB for bus rental URL → send via SMS → done
+3. Ask event type and group size (if not known)
+4. Query Private_Tours_Sales KB → share: tour options, per-person pricing if in KB, inclusions, duration
+5. Do NOT quote total prices. Do NOT promise availability.
+6. Book consultation:
+   "Let me set up a call so we can nail down the details."
+   - Collect email → Book Appointment action (Barley Bus Consultation calendar) → caller picks slot → confirm
+   - If no email → "No problem — I can text you a link to grab a time instead." → query Booking_Links KB for consultation URL → send via SMS
 
-**Success Outcome:** Qualified lead escalated to sales
-**Disposition:** `tourops_outcome = Escalated`, `tourops_next_best_action = AwaitHumanFollowUp`, `tourops_intent_bucket = Corporate`
+**Success Outcome:** Consultation booked (Book Appointment or consultation link sent)
+**Disposition:** `tourops_outcome = ConsultationBooked` (V6.0), `tourops_next_best_action = AwaitScheduledCall`, `tourops_intent_bucket = Corporate`
 
 ---
 
@@ -542,6 +562,20 @@ If KB query returns no relevant result:
 
 ---
 
+## Standard 16: Group Size Fork at 10
+
+10 is the threshold where routing changes:
+
+- **Under 10 people** → ReadyToBook play → direct booking link via SMS
+- **10 or more people** → Corporate/Private play → qualify, answer from KB, book consultation
+
+This fork applies in both ReadyToBook and Discovery plays. When group size hits 10+, do not send a public booking link — route to consultation.
+
+**Voice AI:** "For a group that size, I want to make sure we set you up right." → PATH E
+**Conversation AI:** AI Splitter should recognize 10+ in the opening message and route to CORP module before the customer reaches a booking link.
+
+---
+
 # Layer 6: SMS Pairing
 
 Every conversation outcome must trigger an appropriate follow-up SMS within 60 seconds of conversation end.
@@ -552,7 +586,9 @@ Every conversation outcome must trigger an appropriate follow-up SMS within 60 s
 | `tourops_outcome = Resolved` AND `intent_bucket = DayOf` | Map link + pickup instructions |
 | `tourops_outcome = Resolved` AND `intent_bucket = RefundCancel` | Resolution confirmation |
 | `tourops_outcome = FollowUpQueued` AND `intent_bucket = Discovery` | Value recap + link |
-| `tourops_next_best_action = AwaitScheduledCall` | Scheduling link confirmation |
+| `tourops_outcome = ConsultationBooked` (V6.0) | Consultation confirmation (calendar details) |
+| `tourops_outcome = TaskCreated` (V6.0) | Task acknowledgment ("our team received your request") |
+| `tourops_next_best_action = AwaitScheduledCall` | Scheduling link — `{{custom_value.callback_scheduling_link}}` |
 | Any → Escalated (Tier 3) | Human follow-up notice |
 | `tourops_lifecycle_stage = Abandoned` | Nurture — gentle nudge |
 
@@ -666,6 +702,17 @@ All enum values are defined in **TourOps_Canonical_Schema** (the authoritative d
 - All enum changes require: schema version increment, regression test update, documentation update
 - Values are case-sensitive — use exactly as documented
 
+**V6.0 Pending Enum Additions (after BB proof of concept):**
+
+Two new `tourops_outcome` values are in use in V6.0 builds but are not yet formally added to Schema Contract 3. They will be added via change control after validation in BB production:
+
+| Value | Used When |
+|-------|-----------|
+| `ConsultationBooked` | Caller scheduled a consultation via Book Appointment action or consultation link (Play D, Play F) |
+| `TaskCreated` | AI collected full details for ReservationChange or RefundCancel and created a GHL task (Play C, Play E) |
+
+Until the schema change is made, these values may be used in V6.0 builds but must be tracked and validated before Schema Contract 4 is published.
+
 ---
 
 # Appendix B: Minimum Required Capabilities
@@ -726,14 +773,15 @@ This document is reviewed:
 | r06 | 2026-02-14 | P0/P0b protocol refinements. Standard 10 separated internal/customer-facing. SMS consent check added. | Todd Abrams / Claude |
 | r07 | 2026-02-14 | Hard separation versioning model. Schema is sole contract authority. Non-Alignment Rule added. | Todd Abrams / Claude |
 | r08 | 2026-02-17 | Memory Injection marked IMPLEMENTED. Auto-summaries production details. 8-module system documented. Cross-channel memory architecture. | Todd Abrams / Claude |
-| r10 | 2026-03-03 | Three-tier escalation model. Standard 14 updated: Tier 2 (scheduled callback) now default standard path before Tier 3 (ASAP). Standard 15 updated: KB miss offers scheduling first. Play C + Play E updated to include scheduling offer. SMS Pairing updated. Escalation threshold raised — "uncertain or risky" catchall removed. | Todd Abrams / Claude |
 | r09 | 2026-02-20 | Standard 11: Work State added to memory injection header. Required fields per module clarified. Recipe 5 reference updated. | Todd Abrams / Claude |
+| r10 | 2026-03-03 | Three-tier escalation model. Standard 14 updated: Tier 2 (scheduled callback) now default standard path before Tier 3 (ASAP). Standard 15 updated: KB miss offers scheduling first. Play C + Play E updated to include scheduling offer. SMS Pairing updated. Escalation threshold raised — "uncertain or risky" catchall removed. | Todd Abrams / Claude |
+| r11 | 2026-03-03 | V6.0 build spec integrated. Play B: 10+ group size fork added. Play C: task creation step + full slot list added. Play D: consultation fallback added. Play E: booking protection ask + task creation added. Play F: renamed Private Tours & Large Groups, expanded to all private event types, consultation booking added. Standard 16: group size fork at 10. SMS Pairing: ConsultationBooked + TaskCreated triggers added. Appendix A: V6.0 pending enum values documented. | Todd Abrams / Claude |
 
 ---
 
-**End of TourOps Conversation Design Standard — Doc Revision r09**
+**End of TourOps Conversation Design Standard — Doc Revision r11**
 
 ---
-*Doc Revision: r09 | Last Updated: 2026-02-20 | Owner: Todd Abrams*
+*Doc Revision: r11 | Last Updated: 2026-03-03 | Owner: Todd Abrams*
 *Companion Documents: TourOps_Canonical_Schema, TourOps_GHL_Platform_Capabilities, TourOps_GHL_Implementation_Recipes*
 *Approval Required: System Owner (Todd Abrams)*

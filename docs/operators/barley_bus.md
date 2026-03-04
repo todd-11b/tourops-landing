@@ -129,6 +129,19 @@
 | Last Changed | 2026-03-03 |
 | Turn limit for confidence fallback | 3 exchanges before escalation fires |
 
+**Voice AI Actions (V6.0):**
+
+| Action Name | Type | Trigger | Notes |
+|-------------|------|---------|-------|
+| Send Booking Link — CAT_1 (Drink) | SMS | PATH D1: drink tour, under 10 | No change from V5 |
+| Send Booking Link — CAT_2 (Food) | SMS | PATH D1: food tour, under 10 | No change from V5 |
+| Send Booking Link — CAT_3 (Sightseeing) | SMS | PATH D1: sightseeing, under 10 | No change from V5 |
+| Send Booking Link — PRIVATE | SMS | PATH D1: private inquiry under 10 | No change from V5 |
+| Send Booking Link — BUS_RENTAL | SMS | PATH E: transportation only | No change from V5 |
+| Send Booking Link — GENERAL | SMS | Fallback / unknown tour type | No change from V5 |
+| `OPERATOR__BarleyBus__ConsultationBooked` | SMS | PATH E/G: email-fallback when caller declines to give email | **NEW — V6.0.** Sends `{{custom_value.callback_scheduling_link}}`. Template prefix: `OPERATOR__BarleyBus__` |
+| Book Appointment | Appointment | PATH E: 10+ private tour. PATH G: Human request / confidence fallback | **NEW — V6.0.** Calendar: Barley Bus Consultation (Tim). Offering days: 3. Slots/day: 3. Buffer: 1 hour between slots. Triggers when caller provides email. |
+
 ### Conversation AI
 
 | Field | Value |
@@ -178,7 +191,7 @@
 
 **Callback Scheduling:**
 - `{{custom_value.callback_scheduling_link}}` = `https://links.opsaiworks.com/widget/booking/TKYfczjDev5Is1yOu9Vx`
-- Used by Hope and Conversation AI when offering a scheduled callback. Must be set in GHL Custom Values before V6.0 deploys.
+- Used by Hope and Conversation AI when offering a scheduled callback. ✅ Set in BB production (2026-03-03). Set in sandbox before sandbox deploy.
 
 **Barley Bus Operator-Specific Fields (Voice AI — captured silently when offered):**
 - `CALL_DateRequested`, `CALL_GroupSize`, `VAI_Occasion`, `CALL_PickupArea`
