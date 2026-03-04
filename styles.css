@@ -7,18 +7,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --navy: #1D2939;
-  --blue: #0071E3;
-  --blue-light: #EBF5FF;
-  --red: #E8364F;
-  --red-dark: #CC2D43;
-  --teal: #34C0E8;
-  --teal-light: #E8F9FE;
+  --navy: #1e1b4b;
+  --blue: #4F46E5;
+  --blue-light: #EEF2FF;
+  --red: #4F46E5;
+  --red-dark: #3730a3;
+  --teal: #8B5CF6;
+  --teal-light: #f0f0ff;
   --white: #FFFFFF;
-  --cloud: #F5F5F7;
-  --black: #1D1D1F;
-  --gray: #86868B;
-  --border: #D2D2D7;
+  --cloud: #f5f5f7;
+  --black: #1d1d1f;
+  --gray: #6e6e73;
+  --border: #e5e5e5;
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
@@ -97,7 +97,7 @@ p { line-height: 1.65; color: var(--gray); }
   white-space: nowrap;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--red), #D42E5A);
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
   color: var(--white);
   border-color: var(--red);
 }
@@ -105,7 +105,7 @@ p { line-height: 1.65; color: var(--gray); }
   background: var(--red-dark);
   border-color: var(--red-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(232,54,79,0.35);
+  box-shadow: 0 6px 20px rgba(79,70,229,0.35);
 }
 .btn-secondary {
   background: transparent;
@@ -132,7 +132,7 @@ p { line-height: 1.65; color: var(--gray); }
 
 /* --- Offer Bar --- */
 .offer-bar {
-  background: linear-gradient(90deg, var(--navy) 0%, #1a3a5c 50%, var(--navy) 100%);
+  background: linear-gradient(90deg, var(--navy) 0%, #2d2866 50%, var(--navy) 100%);
   color: var(--white);
   text-align: center;
   padding: 10px 24px;
@@ -286,14 +286,14 @@ p { line-height: 1.65; color: var(--gray); }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(135deg, rgba(0,113,227,0.1), rgba(52,192,232,0.1));
+  background: linear-gradient(135deg, rgba(79,70,229,0.1), rgba(139,92,246,0.1));
   color: var(--blue);
   font-size: 0.8125rem;
   font-weight: 600;
   padding: 6px 14px;
   border-radius: 100px;
   margin-bottom: 24px;
-  border: 1px solid rgba(0,113,227,0.12);
+  border: 1px solid rgba(79,70,229,0.12);
 }
 .hero-badge::before { content: '⚡'; }
 .hero h1 { margin-bottom: 20px; }
@@ -326,7 +326,7 @@ p { line-height: 1.65; color: var(--gray); }
   background: var(--white);
   padding: 8px 16px;
   border-radius: 100px;
-  border: 1px solid rgba(0,113,227,0.15);
+  border: 1px solid rgba(79,70,229,0.15);
   box-shadow: var(--shadow-sm);
 }
 .trust-badge .icon { color: var(--blue); font-size: 1rem; }
@@ -606,7 +606,7 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: var(--white);
   border: 3px solid var(--blue);
-  box-shadow: 0 4px 16px rgba(0,113,227,0.15);
+  box-shadow: 0 4px 16px rgba(79,70,229,0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -860,7 +860,7 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.9375rem;
   color: var(--navy);
   transition: all var(--transition);
-  border: 1px solid rgba(0,113,227,0.08);
+  border: 1px solid rgba(79,70,229,0.08);
 }
 .area-tag:hover {
   background: var(--blue);
