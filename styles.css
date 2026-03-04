@@ -267,16 +267,6 @@ p { line-height: 1.65; color: var(--gray); }
   background: var(--white);
   overflow: hidden;
 }
-.hero::before {
-  content: '★';
-  position: absolute;
-  top: 40px;
-  right: 10%;
-  font-size: 200px;
-  color: var(--blue);
-  opacity: 0.06;
-  pointer-events: none;
-}
 .hero .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -983,10 +973,13 @@ input[type="range"]::-moz-range-thumb {
   transition: max-height 0.35s ease, padding 0.35s ease;
 }
 .faq-answer-inner {
-  padding: 0 0 24px;
+  padding: 16px 20px;
   font-size: 0.9375rem;
   line-height: 1.7;
   color: var(--gray);
+  background: var(--white);
+  border-radius: var(--radius-sm);
+  margin-bottom: 16px;
 }
 
 /* --- Quote Form --- */
