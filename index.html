@@ -267,6 +267,16 @@
     #demo .demo-phone { width: 280px; }
   }
 
+  /* Hide default GHL floating chat bubble — we trigger it from our custom button */
+  #lc_chat_layout,
+  [id*="chat-widget"] > div:first-child,
+  .lc_text_widget_open {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+
   /* QUOTE */
   #quote .container { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: center; }
   .quote-accent { font-size: 160px; font-weight: 900; color: var(--blue-light); line-height: 0.8; font-style: italic; }
@@ -729,10 +739,10 @@
             </div>
             <div class="demo-phone-prompt">Ask about any tour or booking</div>
             <div class="demo-phone-hint">Powered by Voice AI</div>
-            <a href="tel:+18165494684" class="demo-talk-btn">
+            <button id="demo-voice-btn" class="demo-talk-btn" onclick="if(window.leadConnector&&window.leadConnector.chatWidget){window.leadConnector.chatWidget.openWidget()}else{window.location.href='tel:+18165494684'}">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/></svg>
               Start Talking
-            </a>
+            </button>
           </div>
           <div class="demo-phone-footer">
             <span>No recording · Secure browser connection</span>
@@ -1207,5 +1217,13 @@
 <div class="sticky-mobile-cta">
   <a href="#apply-form" class="btn btn-primary btn-full">Stop Missing Bookings →</a>
 </div>
+
+<!-- GHL Voice AI Widget -->
+<script
+  src="https://beta.leadconnectorhq.com/loader.js"
+  data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js"
+  data-widget-id="6982c7775772197f52134d6a">
+</script>
+
 </body>
 </html>
