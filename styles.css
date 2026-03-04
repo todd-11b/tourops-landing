@@ -354,7 +354,6 @@ p { line-height: 1.65; color: var(--gray); }
 .estimator {
   padding: 96px 0;
   background: linear-gradient(160deg, var(--blue-light) 0%, var(--white) 60%, var(--teal-light) 100%);
-  background: var(--white);
 }
 .estimator-card {
   max-width: 680px;
