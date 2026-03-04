@@ -212,6 +212,24 @@ Editorial revisions, clarifications, or internal workflow refinements do not tri
 - Est. Revenue on dashboard = Sum of open Opportunity values × `tourops_conversion_rate`
 - Actual Revenue on dashboard = Sum of Booked Opportunity values (native GHL widget)
 
+**⚑ FLAG — Proof of Work Est. Revenue Calculation (v1 placeholder)**
+
+**Current formula (v1 — in use as of 2026-03-04):**
+`Conversations Handled × AOV × 0.25 = Est. Revenue`
+
+This was the formula used in the staff brief and website. It is a rough proxy — conversations include all AI-handled interactions, not just booking-intent ones, so the number skews high.
+
+**Better options for future versions:**
+
+| Version | Formula | Why Better |
+|---------|---------|------------|
+| v2 | `Opportunities Created × AOV × 0.25` | Only counts booking-intent contacts — more accurate signal |
+| v3 | `Opportunities Created × Avg Guest Count × Price Per Person` | Scales with actual group size — most accurate, requires guest count field |
+
+**To upgrade:** When guest count collection is reliable and `tourops_group_size` is consistently populated, move to v3. Until then, v2 is the recommended next step over v1.
+
+**Do not change v1 without updating the Proof of Work workflow and dashboard widget simultaneously.**
+
 ---
 
 ## 10f. Daily AI Summary — Custom Object

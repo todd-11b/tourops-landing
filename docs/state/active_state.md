@@ -114,6 +114,9 @@ Updated docs: canonical_schema.md (r07), barley_bus.md, conversation_design.md (
 | V6.0 GHL build order: build in BB production first, test in BB, then replicate to sandbox (intentional non-standard order) | [SYSTEM_OWNER] | 2026-03-03 |
 | V6.0 ConsultationBooked + TaskCreated outcome values added to disposition workflow — pending Schema Contract 5 formal change control | [SYSTEM_OWNER] | 2026-03-03 |
 | GHL Sales Pipeline: 4 stages — New Lead, Quoted, Booked, Lost (sales-intent only — no vendor/support/FAQ contacts) | [SYSTEM_OWNER] | 2026-03-04 |
+| Proof of Work Est. Revenue formula locked at v1 (Conversations × AOV × 0.25) — placeholder only. Upgrade path: v2 = Opportunities × AOV × 0.25 / v3 = Opportunities × guest count × price per person. See schema 10c flag. | [SYSTEM_OWNER] | 2026-03-04 |
+| Proof of Work simplified to 4 metrics: Calls Answered, Opportunities Created, Appointments Booked, Conversations Handled | [SYSTEM_OWNER] | 2026-03-04 |
+| Dashboard name in BB: "TourOps New" | [SYSTEM_OWNER] | 2026-03-04 |
 | Dashboard architecture: Tour Ops Command Center — 3 signals (Urgent Issues, Today's Callbacks, Leads This Week) + Proof of Work section | [SYSTEM_OWNER] | 2026-03-04 |
 | AOV and conversion rate stored as per-operator custom values (`tourops_aov`, `tourops_conversion_rate`) — set at onboarding, default conversion rate 0.25 | [SYSTEM_OWNER] | 2026-03-04 |
 | Proof of Work estimated revenue calculation: daily inquiries × `tourops_conversion_rate` × `tourops_aov` — written nightly to `tourops_daily_est_revenue` | [SYSTEM_OWNER] | 2026-03-04 |
