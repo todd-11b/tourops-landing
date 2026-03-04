@@ -199,17 +199,18 @@ Editorial revisions, clarifications, or internal workflow refinements do not tri
 | Field | Type | Purpose |
 |-------|------|---------|
 | `tourops_aov` | Custom Value | Operator's average order value in dollars — set at onboarding |
-| `tourops_conversion_rate` | Custom Value | Lead-to-booking conversion rate as decimal (e.g. 0.25 = 25%) — set at onboarding, default 0.25 |
-| `tourops_daily_est_revenue` | Custom Field (Number) | Nightly calculated: daily inquiries × conversion_rate × AOV — written by Proof of Work workflow |
+| `tourops_conversion_rate` | Custom Value | Lead-to-booking conversion rate as decimal (e.g. 0.25) — set at onboarding, default 0.25 |
 
 **Onboarding Questions:**
 1. "What is your average tour booking value?" → sets `tourops_aov`
 2. "What is your current lead-to-booking conversion rate?" → sets `tourops_conversion_rate` (default: 0.25 if unknown)
 
 **Rules:**
-- `tourops_aov` and `tourops_conversion_rate` set per operator at onboarding — updated manually if changed
-- `tourops_daily_est_revenue` is deprecated — replaced by `Daily AI Summary` Custom Object (see 10f)
-- Calculation happens in nightly workflow, results written to Custom Object record
+- Both values set per operator at onboarding — updated manually if they change
+- `tourops_aov` is stamped as the **monetary value on every Opportunity** when created by workflow
+- This enables native GHL revenue tracking across pipeline stages — no custom formula needed
+- Est. Revenue on dashboard = Sum of open Opportunity values × `tourops_conversion_rate`
+- Actual Revenue on dashboard = Sum of Booked Opportunity values (native GHL widget)
 
 ---
 
@@ -226,8 +227,6 @@ Editorial revisions, clarifications, or internal workflow refinements do not tri
 | `links_sent` | Number | Booking links sent today (Opportunities moved to Quoted) |
 | `consultations_booked` | Number | Appointments created today on AI Callback calendar |
 | `est_bookings` | Number | links_sent × `tourops_conversion_rate` |
-| `est_revenue` | Currency | est_bookings × `tourops_aov` |
-| `actual_revenue` | Currency | Sum of Opportunity monetary value for Booked stage today |
 
 **Nightly Workflow — Proof of Work:**
 1. Trigger: Scheduled daily (end of business day)
@@ -236,23 +235,24 @@ Editorial revisions, clarifications, or internal workflow refinements do not tri
 4. Count Opportunities moved to Quoted today → write to `links_sent`
 5. Count Appointments created today (AI Callback calendar) → write to `consultations_booked`
 6. Calculate: `links_sent` × `{{custom_value.tourops_conversion_rate}}` → write to `est_bookings`
-7. Calculate: `est_bookings` × `{{custom_value.tourops_aov}}` → write to `est_revenue`
-8. Pull sum of Booked opportunity revenue today → write to `actual_revenue`
-9. Create new `Daily AI Summary` record with today's date and all fields populated
+7. Create new `Daily AI Summary` record with today's date and all fields populated
 
 **Dashboard Widget Config (Proof of Work section):**
 
-| Widget Label | Object | Field | Display |
+| Widget Label | Source | Field/Filter | Display |
 |---|---|---|---|
 | Calls Answered | Daily AI Summary | calls_answered | Numeric |
 | Messages Handled | Daily AI Summary | messages_handled | Numeric |
 | Links Sent | Daily AI Summary | links_sent | Numeric |
 | Consultations Booked | Daily AI Summary | consultations_booked | Numeric |
 | Est. Bookings | Daily AI Summary | est_bookings | Numeric |
-| Est. Revenue | Daily AI Summary | est_revenue | Currency |
-| Actual Revenue | Opportunities | monetary_value (Booked, today) | Currency |
+| Est. Revenue | Opportunities (native) | Sum of monetary value — open stages, this week | Currency |
+| Actual Revenue | Opportunities (native) | Sum of monetary value — Booked stage, this week | Currency |
 
-**Filter for all Daily AI Summary widgets:** Date = Today
+**Notes:**
+- Est. Revenue and Actual Revenue use native GHL Opportunity revenue widgets — no custom object needed
+- All other Proof of Work metrics come from Daily AI Summary Custom Object
+- Filter for Daily AI Summary widgets: Date = Today
 
 ---
 
