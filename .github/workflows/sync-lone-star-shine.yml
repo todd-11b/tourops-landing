@@ -1,0 +1,23 @@
+name: Sync Lone Star Shine to dedicated repo
+
+on:
+  push:
+    branches:
+      - 'claude/cleaning-website-design-VH2Dj'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout tourops-landing (cleaning branch)
+        uses: actions/checkout@v4
+        with:
+          ref: claude/cleaning-website-design-VH2Dj
+          fetch-depth: 0
+
+      - name: Push to lone-star-shine repo
+        run: |
+          git remote add lone-star-shine https://x-access-token:${{ secrets.LONE_STAR_SHINE_PAT }}@github.com/todd-11b/lone-star-shine.git
+          git push lone-star-shine HEAD:main --force
+        env:
+          LONE_STAR_SHINE_PAT: ${{ secrets.LONE_STAR_SHINE_PAT }}
