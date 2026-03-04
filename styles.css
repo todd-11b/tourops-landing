@@ -766,43 +766,32 @@ input[type="range"]::-moz-range-thumb {
   background: var(--white);
 }
 .guarantee-content {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
   text-align: center;
 }
-.guarantee-icon {
-  font-size: 3rem;
-  margin-bottom: 16px;
+.guarantee-seal {
+  margin-bottom: 36px;
 }
-.guarantee-details h3 {
-  font-size: 1.5rem;
-  margin-bottom: 16px;
+.seal-svg {
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 16px;
+  filter: drop-shadow(0 8px 24px rgba(217,119,6,0.25));
+}
+.seal-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  line-height: 1.4;
 }
 .guarantee-details p {
   color: var(--gray);
-  font-size: 1rem;
+  font-size: 1.0625rem;
   line-height: 1.75;
-  margin-bottom: 28px;
-}
-.guarantee-list {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  max-width: 480px;
-  margin: 0 auto;
-}
-.guarantee-list li {
-  font-size: 0.9375rem;
-  color: var(--black);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.guarantee-list li::before {
-  content: '✓';
-  color: var(--teal);
-  font-weight: 700;
-  flex-shrink: 0;
+  margin-bottom: 0;
 }
 
 /* --- Reviews --- */
