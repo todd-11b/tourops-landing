@@ -125,7 +125,7 @@
 | File | `prompts/vai_production_prompt.md` |
 | Agent Name | Hope |
 | Platform | GoHighLevel Voice AI Agent |
-| Status | V6.0 DRAFT — Pending 19/19 regression tests + Todd Abrams sign-off. V5.0 remains live. |
+| Status | V6.0 DRAFT — Pending 23/23 regression tests + Todd Abrams sign-off. V5.0 remains live. |
 | Last Changed | 2026-03-03 |
 | Turn limit for confidence fallback | 3 exchanges before escalation fires |
 
@@ -226,7 +226,7 @@ No other prompt overrides are active as of 2026-02-25.
 
 | Component | Version | Status | Notes |
 |-----------|---------|--------|-------|
-| Voice AI Prompt | Hope V5.0 | ✅ LIVE | V6.0 drafted 2026-03-03 — pending 19/19 + sign-off before deploy |
+| Voice AI Prompt | Hope V5.0 | ✅ LIVE | V6.0 drafted 2026-03-03 — pending 23/23 + sign-off before deploy |
 | Schema Contract | 3 (r06) | ✅ LIVE | Confirmed in production 2026-02-28 |
 | Conversation AI | 8-module system | ✅ LIVE | Router + Module architecture, memory injection implemented |
 | Auto-Summaries | Active | ✅ LIVE | Field: `tourops_conversationai_summary`. Inactivity: 30min, Min: 5 messages |
@@ -263,7 +263,7 @@ No other prompt overrides are active as of 2026-02-25.
 
 | Item | Priority | Target |
 |------|----------|--------|
-| Hope V6.0 — Run 19/19 regression tests | REQUIRED | Before V6.0 deploy |
+| Hope V6.0 — Run 23/23 regression tests | REQUIRED | Before V6.0 deploy |
 | Hope V6.0 — Todd Abrams written sign-off | REQUIRED | Before V6.0 deploy |
 | Hope prompt regeneration via Compiler v1.1 | MEDIUM | Q2 2026 |
 | RAG chunk retrieval validation | MEDIUM | Next quarterly review |

@@ -1,9 +1,9 @@
 # TourOps — Voice AI Regression Test Suite & Testing Protocol
 
-**Version:** v1.0 (r02)
-**Last Updated:** 2026-02-26
+**Version:** v1.0 (r04)
+**Last Updated:** 2026-03-03
 **Owner:** Todd Abrams
-**Deployment Requirement:** 19/19 tests passed AND pre-deployment checklist complete before any production deployment.
+**Deployment Requirement:** 23/23 tests passed AND pre-deployment checklist complete before any production deployment.
 **Consolidated from:** TourOps_Voice_AI_Regression_Test_Suite_v1_0.md, TO_Testing_Protocol.md
 
 ---
@@ -53,6 +53,11 @@ Complete before every production deployment:
 - [ ] Memory injection block present (both summary fields)
 - [ ] Agent persona references use variable from OP_Profile.md (not hardcoded)
 
+**V6.0-Specific (if deploying V6.0 or later)**
+- [ ] `{{custom_value.callback_scheduling_link}}` set in GHL Custom Values
+- [ ] Scheduling link confirmed distinct from tour Booking_Links KB URLs
+- [ ] Tier 2 escalation behavior verified in sandbox (scheduling offer fires before vague handoff)
+
 ---
 
 ## Critical Auto-Fail Conditions
@@ -74,7 +79,7 @@ Any of the following = automatic test failure, deployment blocked:
 
 Deployment approved when ALL of the following are true:
 
-1. 19/19 regression tests pass
+1. 23/23 regression tests pass
 2. Pre-deployment checklist is fully checked
 3. `product/build_log.md` entry is complete
 4. Operator OP_Profile.md confirmed on file with Agent_Name defined
@@ -87,10 +92,10 @@ Deployment approved when ALL of the following are true:
 
 | Deployment Type | Minimum Tests Required |
 |-----------------|----------------------|
-| Every deployment (prompt or workflow changes) | All 19 |
+| Every deployment (prompt or workflow changes) | All 23 |
 | Schema-only changes | Tests 16–19 + any tests related to changed fields |
 | KB-only changes | Tests 10–12 |
-| Major releases (new operator snapshot) | Full 19/19 |
+| Major releases (new operator snapshot) | Full 23/23 |
 
 ---
 
@@ -127,6 +132,7 @@ tourops_tour_type       = (blank)
 | Conversation Flow | 13–15 | No |
 | Escalation Logic | 16–18 | **YES — must pass for deployment** |
 | System / State | 19 | **YES — must pass for deployment** |
+| Escalation Model — V6.0 | 20–23 | No (all must pass before V6.0 deploys) |
 
 ---
 
@@ -220,14 +226,14 @@ tourops_tour_type       = (blank)
 
 ## TEST 7: BOUNDARY-01 — No Reschedule Processing
 
-**Rule:** Scope is new bookings only. Reschedule requests → escalate.
+**Rule:** Scope is new bookings only. Reschedule requests → collect info, give policy, offer scheduling callback.
 
 **Caller:** Patricia Lewis — Frustrated, expects it to be simple
 
 **Opening:** "I need to move my tour from March 5th to March 12th."
 
-**PASS:** Hope says "That's something I'll flag for our team" and escalates with callback collection.
-**FAIL:** Hope attempts to process the reschedule or implies it can modify the booking.
+**PASS:** Hope gives rescheduling policy from KB, collects info, offers scheduled callback. Does not attempt to process the change directly.
+**FAIL:** Hope attempts to process the reschedule or implies it can modify the booking directly.
 
 ---
 
@@ -239,7 +245,7 @@ tourops_tour_type       = (blank)
 
 **Opening:** "I need a full refund on my booking from last weekend. The tour was terrible."
 
-**PASS:** Hope acknowledges concern, escalates to team, does not promise or process refund.
+**PASS:** Hope acknowledges concern, gives policy from KB, offers scheduled callback. Does not promise or process refund.
 **FAIL:** Hope attempts to process refund or promises a specific amount/timeline outside policy.
 
 ---
@@ -315,26 +321,26 @@ tourops_tour_type       = (blank)
 
 ## TEST 14: FLOW-02 — Response Length
 
-**Rule:** Keep responses SHORT (1–2 sentences max).
+**Rule:** Keep responses SHORT (30–35 words max per turn).
 
 **Caller:** Kevin Moore — Busy, time-limited
 
 **Opening:** "Tell me about your food tours."
 
-**PASS:** Hope's responses are 1–2 sentences. Points to KB/link for more detail.
+**PASS:** Hope's responses stay within 30–35 words. Points to KB/link for more detail.
 **FAIL:** Hope delivers a 4+ sentence response or reads out a full tour description.
 
 ---
 
 ## TEST 15: FLOW-03 — Clean Call Closure
 
-**Rule:** Always close with: "Anything else I can help with before you go?"
+**Rule:** Always close with a closing question variant: "Any questions before I let you go?"
 
 **Caller:** Lisa Nguyen — Satisfied, wrapping up
 
 **Opening:** "I just wanted to confirm what time my tour starts tomorrow."
 
-**PASS:** Hope asks "Anything else I can help with before you go?" and ends cleanly on "No."
+**PASS:** Hope asks closing question and ends cleanly on "No."
 **FAIL:** Hope hangs up abruptly or asks the close question multiple times.
 
 ---
@@ -362,21 +368,21 @@ tourops_tour_type       = (blank)
 
 **Opening:** "I don't want to talk to a robot. Can I speak to a real person?"
 
-**PASS:** Hope acknowledges request, collects callback info, tags for human follow-up, ends gracefully.
+**PASS:** Hope acknowledges request, offers scheduling link first ("I can find a time for you — want me to text you a link to pick a time?"), collects callback info if declined, ends gracefully.
 **FAIL:** Hope ignores the request and continues trying to help without escalating.
 
 ---
 
-## TEST 18: ESCALATE-03 — KB Gap Escalation (CRITICAL)
+## TEST 18: ESCALATE-03 — KB Gap → Tier 2 Scheduling Offer (CRITICAL)
 
-**Rule:** If KB doesn't have the answer → escalate. Never guess.
+**Rule:** If KB doesn't have the answer → offer Tier 2 (scheduled callback) before defaulting to Tier 3 (vague ASAP). Never guess.
 
 **Caller:** Brenda Cole — Specific needs, expects accuracy
 
 **Opening:** "Do you offer corporate accounts or invoicing for companies that book multiple tours a year?"
 
-**PASS:** Hope says "That's a specific situation — I'll flag it for our team" and escalates.
-**FAIL:** Hope invents an answer or guesses about corporate account policies.
+**PASS:** Hope queries KB, determines it has no answer, then offers: "I can have someone from our team reach out at a set time — want me to text you a link to pick a time?" Whether accepted or declined, Hope escalates appropriately (Tier 2 or Tier 3).
+**FAIL:** Hope invents an answer about corporate accounts. OR Hope gives vague "our team will follow up" without first offering a specific scheduled time.
 
 ---
 
@@ -395,6 +401,70 @@ tourops_tour_type       = (blank)
 **FAIL:** Contact remains stuck in `HUMAN_ACTIVE` after 4+ hours.
 
 **DEPLOYMENT BLOCKER: If this test fails, DO NOT deploy.**
+
+---
+
+# CATEGORY 8: ESCALATION MODEL — V6.0 (Tests 20–23)
+
+> These tests validate V6.0 three-tier escalation behavior. All four must pass before V6.0 is deployed to production. Not auto-fail, but V6.0 is blocked until all pass.
+
+## TEST 20: SCHED-01 — Scheduling Offer Accepted (PATH C1 — Refund/Cancel)
+
+**Rule:** PATH C1 — After collecting info and giving policy, Hope MUST offer a scheduled callback before falling to vague handoff. Caller accepts → `{{custom_value.callback_scheduling_link}}` sent.
+
+**Caller:** Vanessa Cruz — Cooperative, flexible
+
+**Opening:** "I need to cancel my tour for next Saturday. I'm not sure if I can get a refund."
+
+**Scenario:** Hope collects booking name, date, reason. Gives policy from KB. Offers scheduling. Caller says "Yes, send me the link."
+
+**PASS:** Hope confirms phone → sends `{{custom_value.callback_scheduling_link}}` → ends call cleanly. Does NOT use Booking_Links KB for this URL. Does NOT give vague "our team will follow up" as the only option.
+**FAIL:** Hope skips the scheduling offer entirely. OR sends wrong link (tour booking URL instead of callback scheduling link). OR says "our team will follow up" without offering to schedule.
+
+---
+
+## TEST 21: SCHED-02 — Scheduling Offer Declined → Tier 3 Fallback (PATH C2 — Reservation Change)
+
+**Rule:** If caller declines the scheduling offer → Tier 3 fallback: "Our team will reach out to you soon." One time, then end cleanly. Hope must not re-offer scheduling after caller declines.
+
+**Caller:** Marcus Boyd — Direct, doesn't want to wait for a scheduled time
+
+**Opening:** "I need to change my reservation from March 10th to March 17th."
+
+**Scenario:** Hope gives rescheduling policy from KB, collects info, offers scheduling. Caller says "No, just have someone call me."
+
+**PASS:** Hope responds "Our team will reach out to you soon," ends call cleanly. Does NOT loop the scheduling offer after decline. Creates escalation task.
+**FAIL:** Hope repeats the scheduling offer after caller declined. OR Hope hangs up without creating a task. OR Hope ends abruptly without a closing response.
+
+---
+
+## TEST 22: SCHED-03 — KB Miss → Tier 2 Before Tier 3 (General)
+
+**Rule:** When KB has no answer, Hope must offer scheduling (Tier 2) before defaulting to vague ASAP callback (Tier 3). Never invent an answer.
+
+**Caller:** Henry Liu — Detailed, wants specifics
+
+**Opening:** "Do you offer gift cards for tours? I want to buy one for my nephew."
+
+**Scenario:** Gift cards are not covered in any KB. Hope must not guess.
+
+**PASS:** Hope acknowledges it doesn't have that info and immediately offers Tier 2: "I can have someone from our team reach out at a set time — want me to text you a link to pick a time?" Does not invent an answer. Does not go straight to vague "our team will follow up."
+**FAIL:** Hope guesses or invents gift card availability or pricing. OR Hope immediately says "our team will follow up" without offering a scheduled time first.
+
+---
+
+## TEST 23: THRESHOLD-01 — No Over-Escalation on KB-Answerable Topics
+
+**Rule:** Hope uses KB to answer, even for topics that sound sensitive. Only escalate when KB genuinely cannot answer. The escalation threshold is raised — Hope holds ground when the KB has the answer.
+
+**Caller:** Elena Vasquez — Nervous, worried about weather
+
+**Opening:** "What happens if it's raining on the day of our tour? Do you cancel or go ahead with it?"
+
+**Scenario:** Weather/cancellation policy exists in the Policies KB.
+
+**PASS:** Hope queries Policies KB and provides the weather policy clearly. Does NOT say "let me flag this for our team" just because the topic involves cancellation or weather.
+**FAIL:** Hope escalates without attempting a KB answer. OR Hope says "our team will follow up" for a question the KB can resolve.
 
 ---
 
@@ -431,8 +501,12 @@ Agent_Name injected (not hardcoded): YES / NO
 | 17   | ESCALATE-02    | ☐   | ☐   | CRITICAL |
 | 18   | ESCALATE-03    | ☐   | ☐   | CRITICAL |
 | 19   | STUCK-STATE-01 | ☐   | ☐   | CRITICAL |
+| 20   | SCHED-01       | ☐   | ☐   | V6.0     |
+| 21   | SCHED-02       | ☐   | ☐   | V6.0     |
+| 22   | SCHED-03       | ☐   | ☐   | V6.0     |
+| 23   | THRESHOLD-01   | ☐   | ☐   | V6.0     |
 
-TOTAL PASSED: ___/19
+TOTAL PASSED: ___/23
 CRITICAL TESTS PASSED: ___/4
 
 DEPLOYMENT DECISION: DEPLOY / FIX & RETEST / BLOCK
@@ -451,6 +525,7 @@ ISSUES TO FIX:
 | 1–2 tests fail (non-critical) | Document, fix, rerun failed tests only | Mike | Same day |
 | 3+ tests fail | Full re-run after fix | Mike + Todd | Next day |
 | Critical test fails (Tests 16–19) | Deployment blocked. Escalate to Todd immediately. | Mike → Todd | Immediate |
+| V6.0 test fails (Tests 20–23) | Document, fix, rerun. V6.0 cannot deploy until all four pass. | Mike | Same day |
 | Persona hardcoding detected | Deployment blocked. Fix prompt. Rerun. | Mike | Same day |
 | Rollback required post-deploy | Execute rollback playbook. Log in `product/build_log.md`. Notify Todd. | Mike | Within 30 min |
 
@@ -463,3 +538,4 @@ ISSUES TO FIX:
 | r01 | 2026-02-14 | Initial creation. 18 test scripts in RACE format. | Todd / Claude |
 | r02 | 2026-02-14 | Added Test #19: Stuck-State timeout validation (CRITICAL). Count updated to 19. | Todd / Claude |
 | r03 | 2026-03-03 | Consolidated testing protocol checklist into this file. | Todd / Claude |
+| r04 | 2026-03-03 | Added Tests 20–23 (Category 8: Escalation Model — V6.0): SCHED-01, SCHED-02, SCHED-03, THRESHOLD-01. Updated Test 18 pass criteria for Tier 2 scheduling requirement. Updated Tests 7–8 pass criteria for scheduling offer behavior. Added V6.0-specific checklist items. Total: 23 tests. | Todd / Claude |

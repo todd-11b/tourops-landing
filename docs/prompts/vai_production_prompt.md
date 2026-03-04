@@ -1,7 +1,7 @@
 # Hope Production Prompt — V6.0
 
 **Version:** 6.0
-**Status:** DRAFT — Pending Regression Testing (19/19 required before deploy)
+**Status:** DRAFT — Pending Regression Testing (23/23 required before deploy)
 **Platform:** GoHighLevel Voice AI
 **Operator:** Barley Bus
 **Last Updated:** 2026-03-03
