@@ -1,7 +1,7 @@
 # TourOps — Active State
 
 **Rule:** Read this at the start of every session. Update it before you close. One file, one source of truth.
-**Last Updated:** 2026-02-28
+**Last Updated:** 2026-03-03
 **Updated By:** Todd Abrams
 **Consolidated from:** TourOps_Active_State.md, TO_Governance_Conflicts_Register.md, TO_Run_Issues_Log.md
 
@@ -9,9 +9,9 @@
 
 ## WHERE WE ARE
 
-**Stage:** Testing — Grader v1.0 deployed 2026-02-22. Validation window in progress.
-**Primary Blocker:** Tim's grader validation report is overdue. Nothing downstream can be trusted until it's in.
-**Next Human Decision Required:** Todd go/no-go after Tim delivers report.
+**Stage:** Testing — Grader v1.0 deployed 2026-02-22. Validation overdue. Hope V6.0 drafted and pending regression tests.
+**Primary Blocker:** Tim's grader validation report (OL-2) still overdue. Hope V6.0 cannot deploy until 19/19 regression tests complete.
+**Next Human Decision Required:** (1) Todd go/no-go on grader validation. (2) Todd sign-off on Hope V6.0 after 19/19 pass.
 
 ---
 
@@ -22,9 +22,8 @@
 | OL-2 | Grader validation — 10 conversations, 3 manually scored, delta ≤ 0.5 | Tim | 2026-02-28 | 🔴 Overdue |
 | OL-4 | Version Governance Matrix updated for Schema Contract 3 | Mike | 2026-03-07 | 🟡 Open |
 | OL-7 | Airtable + n8n build | Freelancer (Upwork) | 2026-03-14 | 🟡 Pending hire |
-| OL-8 | Claude project instructions updated (new system prompt) | Todd | 2026-03-01 | 🟡 Pending |
-| OL-9 | New project knowledge files added | Todd | 2026-03-01 | 🟡 Pending |
-| OL-10 | Tim added to Claude project | Todd | 2026-03-01 | 🟡 Confirm before sending README |
+| OL-10 | Tim + Mike onboarding emails sent (Claude project setup) | Todd | 2026-03-07 | 🟡 Draft ready — send when Tim has GitHub account |
+| OL-11 | Hope V6.0 — 19/19 regression tests | Mike/Tim | ASAP | 🟡 Open — V6.0 drafted 2026-03-03, awaiting test run |
 
 ---
 
@@ -77,6 +76,8 @@ Stable. Two items in flight — matrix update (Mike, non-blocking) and infrastru
 
 | Decision | Authority | Date |
 |----------|-----------|------|
+| Hope V6.0 drafted — KB-only URLs, path architecture (A–G). Pending 19/19 before deploy. | Todd | 2026-03-03 |
+| Claude project instructions written for Todd, Mike, Tim. Onboarding emails drafted. | Todd | 2026-03-03 |
 | Airtable confirmed as data layer | Todd | 2026-02-28 |
 | n8n built as reusable operator template — operator name as variable | Todd | 2026-02-28 |
 | Mike focused on GHL-specific work — data infrastructure hired out | Todd | 2026-02-28 |

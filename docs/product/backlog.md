@@ -1,6 +1,6 @@
 # TourOps — Build Backlog & Product Gap Tracker
 
-**Last Updated:** 2026-03-02
+**Last Updated:** 2026-03-03
 **Owner:** Todd Abrams
 **KPI Linkage Rule:** Every P1 item must state the KPI it impacts. No KPI = P3 or removed.
 **WIP Rule:** No more than 3 active P1 items at once.
@@ -18,7 +18,7 @@
 
 | Feature | Problem Solved | KPI Impact | Owner | Status | Target |
 |---------|---------------|------------|-------|--------|--------|
-| Barley Bus → Schema Contract 3 Migration | BB running legacy prompt (pre-Schema v2). Grader fields, narrative memory, and work_state controls not aligned with current contract. Creates schema drift risk as new operators onboard on Contract 3. | Voice AI Quality Score | Todd | Planned | 2026-03-03 |
+| Hope V6.0 Deployment | V6.0 drafted with path architecture and KB-only URLs. Needs 19/19 regression tests + Todd sign-off before going live. V5.0 remains live until complete. | Voice AI Quality Score | Todd | Testing | ASAP after 19/19 |
 
 ## P2 — Important
 
@@ -42,6 +42,7 @@
 
 | Feature | Completed | KPI Impact | Result |
 |---------|-----------|------------|--------|
+| Barley Bus → Schema Contract 3 Migration | 2026-02-28 | Voice AI Quality Score | Schema Contract 3 (r06) confirmed live in BB production. Grader fields, narrative memory, work_state all active. |
 | n8n Reusable Template — GHL → Airtable | 2026-02-28 | Deployment Velocity | Per-operator data infra setup under 20 minutes. Operator name as variable. |
 | Platform name-agnostic refactor (OP_Profile.md) | 2026-02-26 | Deployment Consistency | Agent persona removed from all Platform files. OP_Profile.md template created. |
 | Schema Contract 3 — QA Grader Fields | 2026-02-22 | Quality Score | tourops_last_score, tourops_last_review_date, tourops_issue_count added |

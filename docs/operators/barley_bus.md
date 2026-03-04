@@ -122,11 +122,11 @@
 
 | Field | Value |
 |-------|-------|
-| File | `Hope_Production_Prompt_V5.md` |
+| File | `prompts/vai_production_prompt.md` |
 | Agent Name | Hope |
 | Platform | GoHighLevel Voice AI Agent |
-| Status | DRAFT — Pending System Owner Approval |
-| Last Changed | 2026-02-25 |
+| Status | V6.0 DRAFT — Pending 19/19 regression tests + Todd Abrams sign-off. V5.0 remains live. |
+| Last Changed | 2026-03-03 |
 | Turn limit for confidence fallback | 3 exchanges before escalation fires |
 
 ### Conversation AI
@@ -222,8 +222,8 @@ No other prompt overrides are active as of 2026-02-25.
 
 | Component | Version | Status | Notes |
 |-----------|---------|--------|-------|
-| Voice AI Prompt | Hope V5.0 | ✅ LIVE | Legacy prompt — pre-Compiler |
-| Schema Contract | 1 (Legacy) | ⚠️ LEGACY | Migration to Schema Contract 3 planned Q2 2026 |
+| Voice AI Prompt | Hope V5.0 | ✅ LIVE | V6.0 drafted 2026-03-03 — pending 19/19 + sign-off before deploy |
+| Schema Contract | 3 (r06) | ✅ LIVE | Confirmed in production 2026-02-28 |
 | Conversation AI | 8-module system | ✅ LIVE | Router + Module architecture, memory injection implemented |
 | Auto-Summaries | Active | ✅ LIVE | Field: `tourops_conversationai_summary`. Inactivity: 30min, Min: 5 messages |
 | Grader Workflows | VAI + CAI | ✅ LIVE | Schema Contract 3 grader fields active |
@@ -259,9 +259,9 @@ No other prompt overrides are active as of 2026-02-25.
 
 | Item | Priority | Target |
 |------|----------|--------|
-| Schema Contract 3 migration for BB | HIGH | Q2 2026 |
-| Hope prompt regeneration via Compiler v1.1 | HIGH | Q2 2026 |
-| Regression suite 19/19 on new build | REQUIRED | Before migration deploy |
+| Hope V6.0 — Run 19/19 regression tests | REQUIRED | Before V6.0 deploy |
+| Hope V6.0 — Todd Abrams written sign-off | REQUIRED | Before V6.0 deploy |
+| Hope prompt regeneration via Compiler v1.1 | MEDIUM | Q2 2026 |
 | RAG chunk retrieval validation | MEDIUM | Next quarterly review |
 
 ### Known GHL Platform Constraints
@@ -278,6 +278,8 @@ No other prompt overrides are active as of 2026-02-25.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-03-03 | Hope V6.0 drafted. Path architecture (A–G), KB-only URLs, consultation flow. Pending 19/19 + sign-off. | Todd Abrams |
+| 2026-02-28 | Schema Contract 3 (r06) confirmed live in BB production. | Todd Abrams |
 | 2026-02-28 | Document consolidated from BB_Profile, BB_AI_System, BB_Current_State | Todd Abrams |
 | 2026-02-28 | Schema Contract 3 fields confirmed live in BB production | Todd Abrams |
 | 2026-02-22 | Schema Contract 3 approved and active | Todd Abrams |
