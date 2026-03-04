@@ -33,7 +33,9 @@
 | OL-16 | Update BB_Daily_Call_Log spreadsheet with actual `vai_outcome` enum values | Todd | After OL-15 | 🟡 Unblocked — update Sheets summary formulas with confirmed values above |
 | OL-17 | Set `tourops_aov` and `tourops_conversion_rate` custom values in BB GHL account | Todd | 2026-03-07 | 🟡 Open — onboarding questions defined, values TBD for BB |
 | OL-18 | Build Tour Ops Command Center dashboard in BB (3 signals + Proof of Work section) | Todd | 2026-03-07 | 🔄 In progress — widgets added, Proof of Work pending |
-| OL-19 | Build nightly Proof of Work calculation workflow (writes `tourops_daily_est_revenue`) | Todd/Mike | 2026-03-14 | 🟡 Open — schema defined, workflow not yet built |
+| OL-19 | Create `Daily AI Summary` Custom Object in GHL (8 fields per schema 10f) | Todd | 2026-03-14 | 🟡 Open — schema defined, object not yet created in GHL |
+| OL-20 | Build nightly Proof of Work workflow (counts metrics, does math, creates Daily AI Summary record) | Todd/Mike | 2026-03-14 | 🟡 Open — blocked on OL-19 |
+| OL-21 | Add Proof of Work widgets to Tour Ops Command Center dashboard (7 widgets from Daily AI Summary) | Todd | 2026-03-14 | 🟡 Open — blocked on OL-19 |
 
 ---
 

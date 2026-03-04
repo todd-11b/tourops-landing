@@ -208,8 +208,51 @@ Editorial revisions, clarifications, or internal workflow refinements do not tri
 
 **Rules:**
 - `tourops_aov` and `tourops_conversion_rate` set per operator at onboarding — updated manually if changed
-- `tourops_daily_est_revenue` calculated nightly by scheduled workflow
-- Calculation: opportunities created today × `tourops_conversion_rate` × `tourops_aov`
+- `tourops_daily_est_revenue` is deprecated — replaced by `Daily AI Summary` Custom Object (see 10f)
+- Calculation happens in nightly workflow, results written to Custom Object record
+
+---
+
+## 10f. Daily AI Summary — Custom Object
+
+**Object Name:** `Daily AI Summary`
+**Purpose:** Stores nightly AI proof-of-work metrics per operator. Workflow creates one record per day. Dashboard widgets read from this object.
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `date` | Date | Record date — used to filter widget to today |
+| `calls_answered` | Number | Inbound calls answered by AI today |
+| `messages_handled` | Number | Conversations handled by AI today |
+| `links_sent` | Number | Booking links sent today (Opportunities moved to Quoted) |
+| `consultations_booked` | Number | Appointments created today on AI Callback calendar |
+| `est_bookings` | Number | links_sent × `tourops_conversion_rate` |
+| `est_revenue` | Currency | est_bookings × `tourops_aov` |
+| `actual_revenue` | Currency | Sum of Opportunity monetary value for Booked stage today |
+
+**Nightly Workflow — Proof of Work:**
+1. Trigger: Scheduled daily (end of business day)
+2. Count calls answered today → write to `calls_answered`
+3. Count conversations handled today → write to `messages_handled`
+4. Count Opportunities moved to Quoted today → write to `links_sent`
+5. Count Appointments created today (AI Callback calendar) → write to `consultations_booked`
+6. Calculate: `links_sent` × `{{custom_value.tourops_conversion_rate}}` → write to `est_bookings`
+7. Calculate: `est_bookings` × `{{custom_value.tourops_aov}}` → write to `est_revenue`
+8. Pull sum of Booked opportunity revenue today → write to `actual_revenue`
+9. Create new `Daily AI Summary` record with today's date and all fields populated
+
+**Dashboard Widget Config (Proof of Work section):**
+
+| Widget Label | Object | Field | Display |
+|---|---|---|---|
+| Calls Answered | Daily AI Summary | calls_answered | Numeric |
+| Messages Handled | Daily AI Summary | messages_handled | Numeric |
+| Links Sent | Daily AI Summary | links_sent | Numeric |
+| Consultations Booked | Daily AI Summary | consultations_booked | Numeric |
+| Est. Bookings | Daily AI Summary | est_bookings | Numeric |
+| Est. Revenue | Daily AI Summary | est_revenue | Currency |
+| Actual Revenue | Opportunities | monetary_value (Booked, today) | Currency |
+
+**Filter for all Daily AI Summary widgets:** Date = Today
 
 ---
 
