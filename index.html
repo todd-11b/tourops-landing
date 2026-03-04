@@ -248,25 +248,6 @@
           </div>
         </div>
 
-        <div class="service-card">
-          <div class="service-card-img">
-            <img src="https://picsum.photos/seed/recurring/600/400" alt="Recurring cleaning service" width="600" height="400" loading="lazy">
-          </div>
-          <div class="service-card-body">
-            <h3>Recurring Cleaning</h3>
-            <p>Weekly, bi-weekly, or monthly plans that keep your home consistently clean with savings up to 15%.</p>
-          </div>
-        </div>
-
-        <div class="service-card">
-          <div class="service-card-img">
-            <img src="https://picsum.photos/seed/addon/600/400" alt="Add-on cleaning services" width="600" height="400" loading="lazy">
-          </div>
-          <div class="service-card-body">
-            <h3>Add-On Services</h3>
-            <p>Inside fridge, inside oven, window cleaning, laundry, organizing — customize your clean to fit your needs.</p>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -399,35 +380,31 @@
     </div>
   </section>
 
-  <!-- ========== TRUST ========== -->
-  <section class="trust">
+  <!-- ========== GUARANTEE ========== -->
+  <section class="guarantee">
     <div class="container">
       <div class="text-center">
-        <span class="section-label">Why Choose Us</span>
-        <h2 class="section-title">The Lone Star Shine Promise</h2>
-        <p class="section-subtitle">We hold ourselves to the highest standard so you don't have to worry.</p>
+        <span class="section-label">Our Guarantee</span>
+        <h2 class="section-title">100% Satisfaction or Your Money Back</h2>
+        <p class="section-subtitle">We're so confident you'll love our work that we eliminate all the risk.</p>
       </div>
 
-      <div class="trust-grid">
-        <div class="trust-card">
-          <div class="trust-icon">🛡️</div>
-          <h3>Fully Insured</h3>
-          <p>Every cleaner carries liability insurance. Your home and belongings are fully protected.</p>
+      <div class="guarantee-content">
+        <div class="guarantee-badge">
+          <span class="badge-icon">🛡️</span>
+          <span class="badge-text">100%<br>Guaranteed</span>
         </div>
-        <div class="trust-card">
-          <div class="trust-icon">🔍</div>
-          <h3>Background Checked</h3>
-          <p>Every team member passes thorough background screening before entering your home.</p>
-        </div>
-        <div class="trust-card">
-          <div class="trust-icon">🤝</div>
-          <h3>Satisfaction Guaranteed</h3>
-          <p>Not happy? We'll re-clean at no extra charge within 24 hours. No questions asked.</p>
-        </div>
-        <div class="trust-card">
-          <div class="trust-icon">🌿</div>
-          <h3>Eco-Friendly Options</h3>
-          <p>We offer plant-based, non-toxic cleaning products that are safe for kids, pets, and the planet.</p>
+        <div class="guarantee-details">
+          <h3>Zero Risk. Total Peace of Mind.</h3>
+          <p>If you're not completely satisfied with your cleaning, contact us within 24 hours and we'll either re-clean the areas of concern at no charge — or give you a full refund. No hoops, no hassle, no fine print.</p>
+          <ul class="guarantee-list">
+            <li>24-hour re-clean guarantee</li>
+            <li>Full refund if not satisfied</li>
+            <li>Licensed &amp; fully insured</li>
+            <li>Background-checked cleaners</li>
+            <li>Eco-friendly products available</li>
+            <li>No long-term contracts required</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -710,6 +687,27 @@
             </div>
 
             <div class="form-group full">
+              <label>Add-On Services <span style="font-weight:400;color:var(--gray);">(optional)</span></label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">
+                <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.2s;">
+                  <input type="checkbox" name="addons" value="fridge" style="width:16px;height:16px;accent-color:var(--blue);"> Inside Fridge
+                </label>
+                <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.2s;">
+                  <input type="checkbox" name="addons" value="oven" style="width:16px;height:16px;accent-color:var(--blue);"> Inside Oven
+                </label>
+                <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.2s;">
+                  <input type="checkbox" name="addons" value="windows" style="width:16px;height:16px;accent-color:var(--blue);"> Window Cleaning
+                </label>
+                <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.2s;">
+                  <input type="checkbox" name="addons" value="laundry" style="width:16px;height:16px;accent-color:var(--blue);"> Laundry
+                </label>
+                <label style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:100px;font-size:0.875rem;font-weight:500;cursor:pointer;transition:all 0.2s;">
+                  <input type="checkbox" name="addons" value="organizing" style="width:16px;height:16px;accent-color:var(--blue);"> Organizing
+                </label>
+              </div>
+            </div>
+
+            <div class="form-group full">
               <label for="q-notes">Notes</label>
               <textarea id="q-notes" name="notes" placeholder="Anything we should know? Pets, access codes, special requests…"></textarea>
             </div>
@@ -760,8 +758,6 @@
             <li><a href="#services">Standard Cleaning</a></li>
             <li><a href="#services">Deep Cleaning</a></li>
             <li><a href="#services">Move-Out Cleaning</a></li>
-            <li><a href="#services">Recurring Plans</a></li>
-            <li><a href="#services">Add-Ons</a></li>
           </ul>
         </div>
 
