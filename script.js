@@ -255,7 +255,7 @@
           navLinks.forEach(function (link) {
             link.style.color = '';
             if (link.getAttribute('href') === '#' + id) {
-              link.style.color = '#2FA4A9';
+              link.style.color = '#0071E3';
             }
           });
         }
