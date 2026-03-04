@@ -263,4 +263,33 @@
     }, { passive: true });
   }
 
+  // ── Cursor Glow ──
+  var cursorGlow = document.getElementById('cursor-glow');
+  if (cursorGlow && window.matchMedia('(pointer: fine)').matches) {
+    var glowX = 0, glowY = 0, targetX = 0, targetY = 0;
+    var glowActive = false;
+
+    document.addEventListener('mousemove', function (e) {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      if (!glowActive) {
+        glowActive = true;
+        cursorGlow.classList.add('active');
+      }
+    });
+
+    document.addEventListener('mouseleave', function () {
+      glowActive = false;
+      cursorGlow.classList.remove('active');
+    });
+
+    (function animateGlow() {
+      glowX += (targetX - glowX) * 0.08;
+      glowY += (targetY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateGlow);
+    })();
+  }
+
 })();
