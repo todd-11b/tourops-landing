@@ -1,8 +1,21 @@
 /* ============================================================
    ABRAMS FENCE COMPANY — Main JavaScript
+   Premium Redesign
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function() {
+
+  // --- Sticky Header ---
+  const header = document.getElementById('header');
+  function updateHeader() {
+    if (window.scrollY > 60) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', updateHeader);
+  updateHeader();
 
   // --- Mobile Navigation ---
   const hamburger = document.getElementById('hamburger');
@@ -15,7 +28,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.body.style.overflow = mobileNav.classList.contains('open') ? 'hidden' : '';
     });
 
-    // Close mobile nav on link click
     mobileNav.querySelectorAll('a').forEach(function(link) {
       link.addEventListener('click', function() {
         hamburger.classList.remove('active');
@@ -25,16 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // --- Sticky Header Background ---
-  const header = document.getElementById('header');
-  window.addEventListener('scroll', function() {
-    if (window.scrollY > 50) {
-      header.classList.add('scrolled');
-    } else {
-      header.classList.remove('scrolled');
-    }
-  });
-
   // --- FAQ Accordion ---
   document.querySelectorAll('.accordion__trigger').forEach(function(trigger) {
     trigger.addEventListener('click', function() {
@@ -42,13 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
       const content = item.querySelector('.accordion__content');
       const isOpen = item.classList.contains('open');
 
-      // Close all
       document.querySelectorAll('.accordion__item').forEach(function(i) {
         i.classList.remove('open');
         i.querySelector('.accordion__content').style.maxHeight = null;
       });
 
-      // Open clicked if it was closed
       if (!isOpen) {
         item.classList.add('open');
         content.style.maxHeight = content.scrollHeight + 'px';
@@ -73,35 +73,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- Lightbox ---
-  var lightbox = document.getElementById('lightbox');
-  var lightboxContent = document.getElementById('lightboxContent');
-
-  document.querySelectorAll('.gallery-item').forEach(function(item) {
-    item.addEventListener('click', function() {
-      var imgEl = item.querySelector('.gallery-item__image');
-      var label = imgEl.querySelector('span').textContent;
-      var bgStyle = imgEl.getAttribute('style');
-      lightboxContent.innerHTML = '<div style="width:80vw;max-width:900px;height:60vh;border-radius:10px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.5);font-size:16px;' + bgStyle + '">' + label + '</div>';
-      lightbox.classList.add('open');
-    });
-  });
-
-  if (lightbox) {
-    lightbox.querySelector('.lightbox__close').addEventListener('click', function() {
-      lightbox.classList.remove('open');
-    });
-    lightbox.addEventListener('click', function(e) {
-      if (e.target === lightbox) lightbox.classList.remove('open');
-    });
-  }
-
   // --- Estimator ---
   var lengthSlider = document.getElementById('fenceLength');
   var lengthValue = document.getElementById('fenceLengthValue');
   var priceDisplay = document.getElementById('estimatePrice');
 
-  // Base prices per linear foot
   var basePrices = {
     wood:      { 4: 18, 6: 25, 8: 34 },
     vinyl:     { 4: 22, 6: 30, 8: 42 },
@@ -124,14 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var pricePerFoot = basePrices[material][height] || 25;
     var baseTotal = length * pricePerFoot;
-
-    // Gate cost
     baseTotal += gates * 350;
-
-    // Removal surcharge
     if (removeOld) baseTotal += length * 3;
-
-    // Slope surcharge
     if (sloped) baseTotal *= 1.15;
 
     var low = Math.round(baseTotal * 0.85 / 100) * 100;
@@ -147,7 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Option buttons (height, material, gates)
   document.querySelectorAll('.estimator__options').forEach(function(group) {
     group.querySelectorAll('.estimator__option').forEach(function(btn) {
       btn.addEventListener('click', function() {
@@ -158,13 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Toggle checkboxes
   var removeOld = document.getElementById('removeOld');
   var slopedYard = document.getElementById('slopedYard');
   if (removeOld) removeOld.addEventListener('change', calculateEstimate);
   if (slopedYard) slopedYard.addEventListener('change', calculateEstimate);
 
-  // Initial calculation
   calculateEstimate();
 
   // --- Estimate Form ---
@@ -177,10 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
       btn.textContent = 'Submitting...';
       btn.disabled = true;
 
-      // Simulate submission (replace with actual form handler)
       setTimeout(function() {
-        btn.textContent = 'Quote Requested!';
-        btn.style.background = '#2E7D4F';
+        btn.textContent = 'Quote Requested ✓';
+        btn.style.background = '#22c55e';
         setTimeout(function() {
           btn.textContent = originalText;
           btn.style.background = '';
@@ -191,7 +157,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // --- Smooth scroll for anchor links ---
+  // --- Smooth Scroll ---
   document.querySelectorAll('a[href^="#"]').forEach(function(link) {
     link.addEventListener('click', function(e) {
       var target = document.querySelector(this.getAttribute('href'));
@@ -202,19 +168,27 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // --- Scroll Animations ---
-  var observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-  var observer = new IntersectionObserver(function(entries) {
+  // --- Scroll Reveal Animations ---
+  var revealObserver = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
         entry.target.classList.add('visible');
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-  document.querySelectorAll('.section, .split__text, .split__visual, .comparison__col, .process-step, .style-card, .review-card, .timeline__row').forEach(function(el) {
-    el.classList.add('animate-on-scroll');
-    observer.observe(el);
+  document.querySelectorAll(
+    '.section-text-center, .problem-card, .strength-section, .step, .compare-card, ' +
+    '.testimonial-feature, .fence-card, .review-card, .tco-card, .area-card, ' +
+    '.accordion__item, .estimator'
+  ).forEach(function(el) {
+    el.classList.add('reveal');
+    revealObserver.observe(el);
+  });
+
+  // Stagger delays for grid items
+  document.querySelectorAll('.step, .fence-card, .problem-card, .area-card').forEach(function(el, i) {
+    el.style.transitionDelay = (i * 0.08) + 's';
   });
 
 });
