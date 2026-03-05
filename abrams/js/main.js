@@ -175,20 +175,11 @@ document.addEventListener('DOMContentLoaded', function() {
         entry.target.classList.add('visible');
       }
     });
-  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
 
-  document.querySelectorAll(
-    '.section-text-center, .problem-card, .strength-section, .step, .compare-card, ' +
-    '.testimonial-feature, .fence-card, .review-card, .tco-card, .area-card, ' +
-    '.accordion__item, .estimator'
-  ).forEach(function(el) {
-    el.classList.add('reveal');
+  // Observe all elements with the reveal class (added in HTML)
+  document.querySelectorAll('.reveal, .section-text-center').forEach(function(el) {
     revealObserver.observe(el);
-  });
-
-  // Stagger delays for grid items
-  document.querySelectorAll('.step, .fence-card, .problem-card, .area-card').forEach(function(el, i) {
-    el.style.transitionDelay = (i * 0.08) + 's';
   });
 
 });
